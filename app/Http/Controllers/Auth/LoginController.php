@@ -4,9 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Http\Request;
 class LoginController extends Controller
 {
+    use AuthenticatesUsers;
     protected function authenticated(Request $request, $user)
     {
         if ($user->roles->isEmpty()) {
@@ -14,7 +15,7 @@ class LoginController extends Controller
         }
 
         if ($user->hasRole('Admin')) {
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('Admin.admin-dashboard');
         } elseif ($user->hasRole('PM')) {
             return redirect()->route('pm.dashboard');
         } elseif ($user->hasRole('FCO')) {
@@ -26,5 +27,9 @@ class LoginController extends Controller
         }
 
         return redirect('/');
+    }
+    public function dashboard()
+    {
+        return view('Admin.admin-dashboard'); // view create karo resources/views/admin/dashboard.blade.php
     }
 }
