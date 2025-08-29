@@ -22,8 +22,8 @@ class ViewController extends Controller
     }
     // Admin Dashboard
     public function adminDashboard()
-    {
-        return view('Admin.admin-dashboard'); 
-    }
+{
+    return view('admin.admin-dashboard');
+}
 
 }
