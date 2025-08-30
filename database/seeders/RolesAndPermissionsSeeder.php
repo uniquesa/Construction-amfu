@@ -10,23 +10,33 @@ class RolesAndPermissionsSeeder extends Seeder
 {
     public function run()
     {
-        // Pehle existing data clear kar do (optional)
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Permissions create karo
-        Permission::create(['name' => 'create post']);
-        Permission::create(['name' => 'edit post']);
-        Permission::create(['name' => 'delete post']);
-        Permission::create(['name' => 'view post']);
+        // Workflow Permissions
+        $permissions = [
+            'create request',
+            'approve request',
+            'reject request',
+            'view reports',
+            'manage users', // Admin only
+        ];
 
-        // Roles create karo aur permissions assign karo
-        $adminRole = Role::create(['name' => 'admin']);
-        $adminRole->givePermissionTo(Permission::all());
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
+        }
 
-        $editorRole = Role::create(['name' => 'editor']);
-        $editorRole->givePermissionTo(['create post', 'edit post', 'view post']);
+        // Roles for workflow
+        $pm   = Role::firstOrCreate(['name' => 'PM']);
+        $fco  = Role::firstOrCreate(['name' => 'FCO']);
+        $pmo  = Role::firstOrCreate(['name' => 'PMO']);
+        $cso  = Role::firstOrCreate(['name' => 'CSO']);
+        $admin = Role::firstOrCreate(['name' => 'Admin']);
 
-        $userRole = Role::create(['name' => 'user']);
-        $userRole->givePermissionTo(['view post']);
+        // Assign permissions
+        $pm->syncPermissions(['create request', 'view reports']);
+        $fco->syncPermissions(['approve request', 'reject request', 'view reports']);
+        $pmo->syncPermissions(['approve request', 'reject request', 'view reports']);
+        $cso->syncPermissions(['approve request', 'reject request', 'view reports']);
+        $admin->syncPermissions(Permission::all());
     }
 }
