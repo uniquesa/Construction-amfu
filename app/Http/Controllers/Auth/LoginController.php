@@ -29,5 +29,12 @@ class LoginController extends Controller
 
         return redirect('/');
     }
+
+    public function dashboard()
+    {
+        // Admin ka view return karega
+        return view('admin.dashboard'); 
+        // file ka path: resources/views/admin/dashboard.blade.php
+    }
     
 }
