@@ -18,7 +18,6 @@ Route::get('/index',[ViewController::class,'index']);
 // Route::get('/index',[ViewController::class,'index']);
 Route::get('/login',[ViewController::class,'login']);
 Route::get('/ZUHAIB',[ViewController::class,'ZUHAIB']);
-Route::get('/ZUHAIB2',[ViewController::class,'ZUHAIB2']);
 Route::get('/signup',[ViewController::class,'signup']);
 Route::get('/users',[ViewController::class,'users']);
 Route::get('/form',[ViewController::class,'form']);
